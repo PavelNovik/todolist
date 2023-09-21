@@ -29,26 +29,7 @@ function App() {
 
     const [filter, setFilter] = useState<FilterType>('all')
 
-    // With function and switch case
-    const getFilteredTasks = (allTasks: Array<TaskType>, filterValue: FilterType): Array<TaskType> => {
-        switch (filterValue) {
-            case "active":
-                return allTasks.filter(t => !t.isDone)
-            case "completed":
-                return allTasks.filter(t => t.isDone)
-            case "all":
-                return allTasks
-        }
-    }
-
-    const filteredTasks: Array<TaskType> = getFilteredTasks(tasks, filter)
-
-
-    // Ternary operator
-    // const getFilTask: Array<TaskType> = filter === "active" ? tasks.filter(t => t.isDone === false) : filter === "completed" ? tasks.filter(t => t.isDone === true) : tasks
-
     // With if else operator
-
     // let filteredTask: Array<TaskType> = tasks
     // if (filter === 'active') {
     //     filteredTask = tasks.filter(t => t.isDone === false)
@@ -56,11 +37,26 @@ function App() {
     // if (filter === 'completed') {
     //     filteredTask = tasks.filter(t => t.isDone === true)
     // }
+
+    // With function and switch case
+    // const getFilteredTasks = (allTasks: Array<TaskType>, filterValue: FilterType): Array<TaskType> => {
+    //     switch (filterValue) {
+    //         case "active":
+    //             return allTasks.filter(t => !t.isDone)
+    //         case "completed":
+    //             return allTasks.filter(t => t.isDone)
+    //         case "all":
+    //             return allTasks
+    //     }
+    // }
+    // const filteredTasks: Array<TaskType> = getFilteredTasks(tasks, filter)
+
+    // Ternary operator
+    const filteredTasks: Array<TaskType> = filter === "active" ? tasks.filter(t => !t.isDone) : filter === "completed" ? tasks.filter(t => t.isDone) : tasks
+
     const filterTask = (value: FilterType) => {
         setFilter(value)
     }
-
-
 
     return (
         <div className="App">
