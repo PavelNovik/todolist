@@ -1,8 +1,8 @@
-import React, {FC} from "react";
+import React, {ChangeEvent, FC, useState} from "react";
 import {FilterType} from "./App";
 
 export type TaskType = {
-    id: number
+    id: string
     title: string
     isDone: boolean
 }
@@ -10,15 +10,17 @@ export type TaskType = {
 type TodolistPropsType = {
     title: string
     tasks: Array<TaskType>
-    removeTask: (taskId: number) => void
+    removeTask: (taskId: string) => void
     filterTask: (value: FilterType) => void
+    addTask: (newTitle: string) => void
 }
 
-export const Todolist: FC<TodolistPropsType> = ({title, tasks, removeTask, filterTask}) => {
-    // const {title: myTitle, tasks} = props
+export const Todolist: FC<TodolistPropsType> = ({title, tasks, removeTask, filterTask, addTask}) => {
+
+    const [newTitle, setNewTitle] = useState<string>('')
+
 
     const listItems: Array<JSX.Element> = tasks.map((t) => {
-        // debugger
         return (<li key={t.id}><input type="checkbox" checked={t.isDone}/> <span>{t.title}</span>
                 <button onClick={() => removeTask(t.id)}>x</button>
             </li>
@@ -28,20 +30,23 @@ export const Todolist: FC<TodolistPropsType> = ({title, tasks, removeTask, filte
     const tasksList: JSX.Element = !tasks.length ? (<span>Your tasks list is empty</span>) : (<ul>
         {listItems}
     </ul>)
+
+    const onClickHandler = () => {
+        addTask(newTitle)
+        setNewTitle('')
+    }
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewTitle(e.currentTarget.value)
+    }
+
     return (
         <div className={"todolist"}>
             <h3>{title}</h3>
             <div>
-                <input/>
-                <button>+</button>
+                <input value={newTitle} onChange={onChangeHandler}/>
+                <button onClick={onClickHandler}>+</button>
             </div>
             {tasksList}
-            {/*<ul>*/}
-            {/*    {tasks.map((t, i) => {*/}
-            {/*        return (<li key={i}><input type="checkbox" checked={t.isDone}/> <span>{t.title}</span><button>x</button></li>*/}
-            {/*        )*/}
-            {/*    })}*/}
-            {/*</ul>*/}
             <div>
                 <button onClick={() => filterTask('all')}>All</button>
                 <button onClick={() => filterTask('active')}>Active</button>
