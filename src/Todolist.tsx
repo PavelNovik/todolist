@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, FC, useState} from "react";
 import {FilterType} from "./App";
 
 export type TaskType = {
@@ -38,13 +38,18 @@ export const Todolist: FC<TodolistPropsType> = ({title, tasks, removeTask, filte
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTitle(e.currentTarget.value)
     }
+    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" && e.ctrlKey) {
+            onClickHandler()
+        }
+    }
 
     return (
         <div className={"todolist"}>
             <h3>{title}</h3>
             <div>
-                <input value={newTitle} onChange={onChangeHandler}/>
-                <button onClick={onClickHandler}>+</button>
+                <input value={newTitle} onChange={onChangeHandler} onKeyDown={onKeyDownHandler}/>
+                <button disabled={!newTitle} onClick={onClickHandler}>+</button>
             </div>
             {tasksList}
             <div>
