@@ -40,11 +40,20 @@ function App() {
         const newTask: TaskType = {id: v1(), title: newTitle, isDone: false}
         setTasks([newTask, ...tasks])
     }
+    const changeTaskStatus = (id: string, isDone: boolean) => {
+        const changedTasks = tasks.map(t => t.id === id ? {...t, isDone: isDone} : t)
+        setTasks(changedTasks)
+    }
 
     return (
         <div className="App">
-            <Todolist title={todoListTitle} tasks={filteredTasks} removeTask={removeTask} filterTask={filterTask}
-                      addTask={addTask}/>
+            <Todolist title={todoListTitle}
+                      tasks={filteredTasks}
+                      removeTask={removeTask}
+                      filterTask={filterTask}
+                      filter={filter}
+                      addTask={addTask}
+                      changeTaskStatus={changeTaskStatus}/>
         </div>
     );
 }

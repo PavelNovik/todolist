@@ -16,3 +16,18 @@
   padding: 15px;
   height: max-content;
 }
+.active-filter {
+  background-color: chocolate;
+  color: blanchedalmond;
+}
+.task-active {
+  font-weight: bold;
+}
+.task-done {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+.error {
+  border: 2px solid red;
+  outline: none;
+}
