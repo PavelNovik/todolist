@@ -1,5 +1,6 @@
-import React, {ChangeEvent, KeyboardEvent, FC, useState} from "react";
+import React, {ChangeEvent, FC} from "react";
 import {FilterType} from "./App";
+import {Input} from "./Input";
 
 export type TaskType = {
     id: string
@@ -30,24 +31,10 @@ export const Todolist: FC<TodolistPropsType> = ({
                                                     changeTaskStatus,
                                                     removeTodolist
                                                 }) => {
+    const addTaskTitle = (newTitle: string) => {
+        addTask(id, newTitle)
+    }
 
-    const [newTitle, setNewTitle] = useState<string>('')
-    const [error, setError] = useState(false)
-
-    const onClickHandler = () => {
-        const trimmedTitle = newTitle.trim()
-        trimmedTitle ? addTask(id, trimmedTitle) : setError(true)
-        setNewTitle('')
-    }
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTitle(e.currentTarget.value)
-    }
-    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(false)
-        if (e.key === "Enter" && e.ctrlKey) {
-            onClickHandler()
-        }
-    }
     const removeTodolistHandler = () => removeTodolist(id)
     const setFilterAll = () => {
         filterTask(id, 'all')
@@ -77,28 +64,20 @@ export const Todolist: FC<TodolistPropsType> = ({
     const tasksList: JSX.Element = !tasks.length ? (<span>Your tasks list is empty</span>) : (<ul>
         {listItems}
     </ul>)
-    const userMessage: JSX.Element = error ?
-        <span style={{color: "darkred"}}>Input should not be empty</span> : newTitle.length > 15 ?
-            <span style={{color: "darkred"}}>Input is too long</span> :
-            <span style={{fontSize: '13px'}}>Press ctrl+enter to add task</span>
+
 
     return (
         <div className={"todolist"}>
             <h3>{title}
                 <button onClick={removeTodolistHandler}>X</button>
             </h3>
-            <div>
-                <input className={error ? 'error' : undefined} value={newTitle} onChange={onChangeHandler}
-                       onKeyDown={onKeyDownHandler}/>
-                <button disabled={!newTitle} onClick={onClickHandler}>+</button>
-            </div>
-            {userMessage}
+            <Input onClick={addTaskTitle}/>
             {tasksList}
             <div>
-                <button className={filter === "all" ? 'active-filter' : undefined} onClick={setFilterAll}>All</button>
-                <button className={filter === "active" ? 'active-filter' : undefined} onClick={setFilterActive}>Active
+                <button className={filter === "all" ? 'active-filter' : ''} onClick={setFilterAll}>All</button>
+                <button className={filter === "active" ? 'active-filter' : ''} onClick={setFilterActive}>Active
                 </button>
-                <button className={filter === "completed" ? 'active-filter' : undefined}
+                <button className={filter === "completed" ? 'active-filter' : ''}
                         onClick={setFilterCompleted}>Completed
                 </button>
             </div>
