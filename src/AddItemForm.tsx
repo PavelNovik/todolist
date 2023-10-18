@@ -1,9 +1,10 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
+import {Button, TextField} from "@mui/material";
 
 type InputProps = {
     onClick: (title: string) => void
 }
-export const Input: FC<InputProps> = ({onClick}) => {
+export const AddItemForm: FC<InputProps> = ({onClick}) => {
     const [newTitle, setNewTitle] = useState<string>('')
     const [error, setError] = useState(false)
     const onClickHandler = () => {
@@ -27,11 +28,17 @@ export const Input: FC<InputProps> = ({onClick}) => {
 
     return (
         <div>
-            <input className={error ? 'error' : undefined} value={newTitle} onChange={onChangeHandler}
+            <TextField label="New Title" id="outlined-size-small" size="small" className={error ? 'error' : undefined} value={newTitle} onChange={onChangeHandler}
                    onKeyDown={onKeyDownHandler}/>
-            <button disabled={!newTitle} onClick={onClickHandler}>+</button>
+            <Button variant="contained" size="small" color="success" disabled={!newTitle} onClick={onClickHandler}>+</Button>
             <div>{userMessage}</div>
         </div>
     );
 };
 
+// <TextField
+//     label="Size"
+//     id="outlined-size-small"
+//     defaultValue="Small"
+//     size="small"
+// />
