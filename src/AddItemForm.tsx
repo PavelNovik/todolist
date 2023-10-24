@@ -1,5 +1,6 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
-import {Button, TextField} from "@mui/material";
+import {Button, IconButton, TextField} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
 type InputProps = {
     onClick: (title: string) => void
@@ -30,7 +31,7 @@ export const AddItemForm: FC<InputProps> = ({onClick}) => {
         <div>
             <TextField label="New Title" id="outlined-size-small" size="small" className={error ? 'error' : undefined} value={newTitle} onChange={onChangeHandler}
                    onKeyDown={onKeyDownHandler}/>
-            <Button variant="contained" size="small" color="success" disabled={!newTitle} onClick={onClickHandler}>+</Button>
+            <IconButton size="small" color="success" disabled={!newTitle} onClick={onClickHandler}><AddBox/></IconButton>
             <div>{userMessage}</div>
         </div>
     );

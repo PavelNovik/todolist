@@ -2,7 +2,7 @@ import React, {ChangeEvent, FC} from "react";
 import {FilterType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@mui/material";
+import {Button, Checkbox, IconButton, Paper} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export type TaskType = {
@@ -81,7 +81,7 @@ export const Todolist: FC<TodolistPropsType> = ({
 
 
     return (
-        <div className={"todolist"}>
+        <Paper elevation={24} className={"todolist"}>
             <h3><EditableSpan title={title} onClick={changeTodolistTitleHandler}/>
                 <IconButton aria-label="delete" size="large" onClick={removeTodolistHandler}><DeleteIcon fontSize="inherit"/></IconButton>
             </h3>
@@ -95,6 +95,6 @@ export const Todolist: FC<TodolistPropsType> = ({
                         onClick={setFilterCompleted}>Completed
                 </Button>
             </div>
-        </div>
+        </Paper>
     )
 }
