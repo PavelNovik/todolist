@@ -1,8 +1,8 @@
-import React, {ChangeEvent, FC} from "react";
+import React, {ChangeEvent, FC, useState} from "react";
 import {FilterType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton, Paper} from "@mui/material";
+import {Button, Checkbox, Fade, IconButton, Paper} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export type TaskType = {
@@ -38,6 +38,8 @@ export const Todolist: FC<TodolistPropsType> = ({
                                                     removeTodolist,
                                                     changeTodolistTitle,
                                                 }) => {
+
+    const [checked, setChecked] = useState(true)
     const addTaskTitle = (newTitle: string) => {
         addTask(id, newTitle)
     }
@@ -67,21 +69,23 @@ export const Todolist: FC<TodolistPropsType> = ({
         const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
             changeTaskStatus(id, t.id, e.currentTarget.checked)
         }
-        return (<li key={t.id}>
-                <Checkbox color="default" onChange={changeTaskStatusHandler} checked={t.isDone}/>
+        return (<Fade in={checked}><li key={t.id}>
+                <Checkbox color="success" onChange={changeTaskStatusHandler} checked={t.isDone}/>
                 <EditableSpan onClick={changeTaskTitleHandler} isDone={t.isDone} title={t.title}/>
                 <IconButton aria-label="delete" onClick={removeTaskHandler}><DeleteIcon fontSize="small"/></IconButton>
-            </li>
+            </li></Fade>
         )
     })
 
     const tasksList: JSX.Element = !tasks.length ? (<span>Your tasks list is empty</span>) : (<ul>
         {listItems}
     </ul>)
-
+const todosStyle = {
+        borderRadius: "10px"
+}
 
     return (
-        <Paper elevation={24} className={"todolist"}>
+        <Paper style={todosStyle} elevation={24} className={"todolist"}>
             <h3><EditableSpan title={title} onClick={changeTodolistTitleHandler}/>
                 <IconButton aria-label="delete" size="large" onClick={removeTodolistHandler}><DeleteIcon fontSize="inherit"/></IconButton>
             </h3>
@@ -89,9 +93,9 @@ export const Todolist: FC<TodolistPropsType> = ({
             {tasksList}
             <div>
                 <Button color="success" variant={filter === "all" ? 'contained' : 'outlined'} onClick={setFilterAll}>All</Button>
-                <Button color="success" variant={filter === "active" ? 'contained' : 'outlined'} onClick={setFilterActive}>Active
+                <Button color="secondary" variant={filter === "active" ? 'contained' : 'outlined'} onClick={setFilterActive}>Active
                 </Button>
-                <Button color="success" variant={filter === "completed" ? 'contained' : 'outlined'}
+                <Button color="error" variant={filter === "completed" ? 'contained' : 'outlined'}
                         onClick={setFilterCompleted}>Completed
                 </Button>
             </div>

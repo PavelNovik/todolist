@@ -1,16 +1,16 @@
 .App {
-  padding: 30px;
-  display: flex;
-  background-color: blanchedalmond;
+  /*padding: 30px;*/
+  /*display: flex;*/
+  /*background-color: blanchedalmond;*/
   height: 100vh;
 }
 
 .App > div {
-  margin-right: 50px;
+  /*margin-right: 50px;*/
 }
 
 .todolist {
-  border: 1px solid #7e3b04;
+  /*border: 1px solid #7e3b04;*/
   background-color: #ffffff;
   border-radius: 5px;
   padding: 15px;
