@@ -1,12 +1,12 @@
 import {TasksType} from "../App";
 import {
-    addNewTodolistAC,
     addTaskAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTaskAC,
     tasksReducer
 } from "./tasksReducer";
+import {addNewTodolistAC, removeTodolistAC} from "./todolistReducer";
 
 const tasks: TasksType = {
     ['1']: [
@@ -51,10 +51,18 @@ test('Change Task Title in Todolist', () => {
 })
 
 test('Add New Todolist Title in Tasks List',()=> {
-    const newState = tasksReducer(tasks, addNewTodolistAC('3'))
+    const action = addNewTodolistAC('Title')
+    const newState = tasksReducer(tasks, action)
 
-    expect(tasks[3]).toBeFalsy()
-    expect(newState[3]).toBeTruthy()
-    expect(newState[3].length).toBe(0)
+    expect(tasks[action.payload.newTodolistId]).toBeFalsy()
+    expect(newState[action.payload.newTodolistId]).toBeTruthy()
+    expect(newState[action.payload.newTodolistId].length).toBe(0)
+
+})
+test('Remove Todolist in Tasks List',()=> {
+    const newState = tasksReducer(tasks, removeTodolistAC('2'))
+
+    expect(tasks['2']).toBeTruthy()
+    expect(newState['2']).toBeFalsy()
 
 })

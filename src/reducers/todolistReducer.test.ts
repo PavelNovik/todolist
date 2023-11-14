@@ -1,6 +1,6 @@
 import {TodolistType} from "../App";
 import {
-    addTodolistAC,
+    addNewTodolistAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     removeTodolistAC,
@@ -12,11 +12,12 @@ const startState: TodolistType[] = [
     {id: '2', title: 'Title2', filter: 'all'},
 ]
 test('Add Todolist', () => {
-    const newState = todolistReducer(startState, addTodolistAC('3', 'Title3'))
+    const action = addNewTodolistAC('Title3')
+    const newState = todolistReducer(startState, action)
 
     expect(newState.length).toBe(3)
-    expect(newState[0].id).toBe('3')
     expect(newState[0].title).toBe('Title3')
+    expect(newState[0].id).toBe(action.payload.newTodolistId)
 
 })
 
