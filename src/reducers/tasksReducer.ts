@@ -1,40 +1,69 @@
 import {TasksType} from "../App";
 import {v1} from "uuid";
 import {TaskType} from "../Todolist";
-import {AddNewTodolistACType, RemoveTodolistACType} from "./todolistReducer";
+import {AddNewTodolistACType, RemoveTodolistACType, todolistId1, todolistId2} from "./todolistReducer";
 
-export const tasksReducer = (tasks: TasksType, action: TaskReducerType): TasksType => {
+
+const initialState: TasksType = {
+    [todolistId1]: [{id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false},
+        {id: v1(), title: "CSS", isDone: false},
+        {id: v1(), title: "SASS", isDone: true}],
+    [todolistId2]: [{id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "CSS", isDone: false},
+        {id: v1(), title: "SASS", isDone: true}],
+}
+
+export const tasksReducer = (state: TasksType = initialState, action: TaskReducerType): TasksType => {
     switch (action.type) {
         case "REMOVE-TASK" : {
             return {
-                ...tasks,
-                [action.payload.todolistId]: tasks[action.payload.todolistId].filter(t => t.id !== action.payload.taskId)
+                ...state,
+                [action.payload.todolistId]: state[action.payload.todolistId].filter(t => t.id !== action.payload.taskId)
             }
         }
         case "ADD-TASK" : {
             const newTask: TaskType = {id: v1(), title: action.payload.newTitle, isDone: false}
-            return {...tasks, [action.payload.todolistId]: [newTask, ...tasks[action.payload.todolistId]]}
+            return {...state, [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]}
         }
         case "CHANGE-TASK-STATUS" : {
-            return {...tasks, [action.payload.todolistId]: tasks[action.payload.todolistId].map(t=> t.id === action.payload.id ? {...t, isDone: action.payload.isDone} : t)}
+            return {...state,
+                [action.payload.todolistId]: state[action.payload.todolistId].map(t => t.id === action.payload.id ? {
+                    ...t,
+                    isDone: action.payload.isDone
+                } : t)
+            }
         }
         case "CHANGE-TASK-TITLE" : {
-            return {...tasks, [action.payload.todolistId]: tasks[action.payload.todolistId].map(t=> t.id === action.payload.taskId ? {...t, title: action.payload.newTitle} : t)}
+            return {...state,
+                [action.payload.todolistId]: state[action.payload.todolistId].map(t => t.id === action.payload.taskId ? {
+                    ...t,
+                    title: action.payload.newTitle
+                } : t)
+            }
         }
         case 'ADD-NEW-TODOLIST': {
-            return {...tasks, [action.payload.newTodolistId]:[]}
+            return {...state, [action.payload.newTodolistId]: []}
         }
         case "REMOVE-TODOLIST" : {
-            const copyTasks = {...tasks}
+            const copyTasks = {...state}
             delete copyTasks[action.payload.todolistId]
             return copyTasks
         }
         default:
-            return tasks
+            return state
     }
 }
 
-export type TaskReducerType = RemoveTaskACType | AddTaskACType | ChangeTaskStatusACType | ChangeTaskTitleACType | AddNewTodolistACType | RemoveTodolistACType
+export type TaskReducerType =
+    RemoveTaskACType
+    | AddTaskACType
+    | ChangeTaskStatusACType
+    | ChangeTaskTitleACType
+    | AddNewTodolistACType
+    | RemoveTodolistACType
 
 type RemoveTaskACType = ReturnType<typeof removeTaskAC>
 export const removeTaskAC = (todolistId: string, taskId: string) => {
@@ -79,13 +108,3 @@ export const changeTaskTitleAC = (todolistId: string, taskId: string, newTitle: 
         }
     } as const
 }
-// type AddNewTodolistACType = ReturnType<typeof addNewTodolistAC>
-// export const addNewTodolistAC = (newTodolistId: string, newTitle:string) => {
-//     return {
-//         type: "ADD-NEW-TODOLIST",
-//         payload: {
-//             newTodolistId,
-//             newTitle
-//         }
-//     } as const
-// }
