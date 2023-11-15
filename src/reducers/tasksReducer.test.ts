@@ -8,16 +8,21 @@ import {
 } from "./tasksReducer";
 import {addNewTodolistAC, removeTodolistAC} from "./todolistReducer";
 
-const tasks: TasksType = {
-    ['1']: [
-        {id: 'a', title: "title1.1", isDone: false},
-        {id: 'b', title: "title1.2", isDone: true}
-    ],
-    ['2']: [
-        {id: 'c', title: "title2.1", isDone: true},
-        {id: 'd', title: "title2.2", isDone: false}
-    ]
-}
+let tasks: TasksType
+
+beforeEach(() => {
+    tasks = {
+        ['1']: [
+            {id: 'a', title: "title1.1", isDone: false},
+            {id: 'b', title: "title1.2", isDone: true}
+        ],
+        ['2']: [
+            {id: 'c', title: "title2.1", isDone: true},
+            {id: 'd', title: "title2.2", isDone: false}
+        ]
+    }
+})
+
 
 test('Remove Task from Todolist', () => {
     const newState = tasksReducer(tasks, removeTaskAC('2', 'd'))
@@ -50,7 +55,7 @@ test('Change Task Title in Todolist', () => {
     expect(newState[2][0].title).toBe('New Title 2.1')
 })
 
-test('Add New Todolist Title in Tasks List',()=> {
+test('Add New Todolist Title in Tasks List', () => {
     const action = addNewTodolistAC('Title')
     const newState = tasksReducer(tasks, action)
 
@@ -59,7 +64,7 @@ test('Add New Todolist Title in Tasks List',()=> {
     expect(newState[action.payload.newTodolistId].length).toBe(0)
 
 })
-test('Remove Todolist in Tasks List',()=> {
+test('Remove Todolist in Tasks List', () => {
     const newState = tasksReducer(tasks, removeTodolistAC('2'))
 
     expect(tasks['2']).toBeTruthy()
