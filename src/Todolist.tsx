@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useState} from "react";
+import React, {ChangeEvent, FC, useCallback, useState} from "react";
 import {FilterType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -40,9 +40,10 @@ export const Todolist: FC<TodolistPropsType> = ({
                                                 }) => {
 
     const [checked, setChecked] = useState(true)
-    const addTaskTitle = (newTitle: string) => {
+
+    const addTaskTitle = useCallback((newTitle: string) => {
         addTask(id, newTitle)
-    }
+    }, [addTask, id])
 
     const removeTodolistHandler = () => removeTodolist(id)
 
@@ -69,7 +70,7 @@ export const Todolist: FC<TodolistPropsType> = ({
         const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
             changeTaskStatus(id, t.id, e.currentTarget.checked)
         }
-        return (<Fade in={checked}><li key={t.id}>
+        return (<Fade in={checked} key={t.id}><li >
                 <Checkbox color="success" onChange={changeTaskStatusHandler} checked={t.isDone}/>
                 <EditableSpan onClick={changeTaskTitleHandler} isDone={t.isDone} title={t.title}/>
                 <IconButton aria-label="delete" onClick={removeTaskHandler}><DeleteIcon fontSize="small"/></IconButton>

@@ -10,7 +10,6 @@ const initialState: TodolistType[] = [
 ]
 
 export const todolistReducer = (state: TodolistType[] = initialState, action: TodosType): TodolistType[] => {
-    debugger
     switch (action.type) {
         case "ADD-NEW-TODOLIST" : {
             const newTodo: TodolistType = {id: action.payload.newTodolistId, title: action.payload.newTitle, filter: 'all'}

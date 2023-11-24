@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {TaskType, Todolist} from "./Todolist";
 import {AddItemForm} from "./AddItemForm";
@@ -42,18 +42,18 @@ function App() {
     const filterTask = (todolistId: string, value: FilterType) => {
         dispatch(changeTodolistFilterAC(todolistId, value))
     }
-    const addTask = (todolistId: string, newTitle: string) => {
+    const addTask = useCallback((todolistId: string, newTitle: string) => {
         dispatch(addTaskAC(todolistId, newTitle))
-    }
+    },[dispatch])
     const changeTaskStatus = (todolistId: string, id: string, isDone: boolean) => {
         dispatch(changeTaskStatusAC(todolistId, id, isDone))
     }
     const changeTaskTitle = (todolistId: string, taskId: string, newTitle: string) => {
         dispatch(changeTaskTitleAC(todolistId, taskId, newTitle))
     }
-    const addTodolist = (newTitle: string) => {
+    const addTodolist = useCallback((newTitle: string) => {
         dispatch(addNewTodolistAC(newTitle))
-    }
+    }, [dispatch])
     const removeTodolist = (todolistId: string) => {
         dispatch(removeTodolistAC(todolistId))
     }
@@ -74,19 +74,19 @@ function App() {
                     {todolists.map(el => {
                         const filteredTasks: TaskType[] = el.filter === "active" ? tasks[el.id].filter(t => !t.isDone) : el.filter === "completed" ? tasks[el.id].filter(t => t.isDone) : tasks[el.id]
                         return (
-                            <Grid item xs={2}>
-                                <Todolist key={el.id}
-                                          id={el.id}
-                                          title={el.title}
-                                          tasks={filteredTasks}
-                                          removeTask={removeTask}
-                                          filterTask={filterTask}
-                                          filter={el.filter}
-                                          addTask={addTask}
-                                          changeTaskStatus={changeTaskStatus}
-                                          changeTaskTitle={changeTaskTitle}
-                                          removeTodolist={removeTodolist}
-                                          changeTodolistTitle={changeTodolistTitle}/>
+                            <Grid item xs={2} key={el.id}>
+                                <Todolist
+                                    id={el.id}
+                                    title={el.title}
+                                    tasks={filteredTasks}
+                                    removeTask={removeTask}
+                                    filterTask={filterTask}
+                                    filter={el.filter}
+                                    addTask={addTask}
+                                    changeTaskStatus={changeTaskStatus}
+                                    changeTaskTitle={changeTaskTitle}
+                                    removeTodolist={removeTodolist}
+                                    changeTodolistTitle={changeTodolistTitle}/>
                             </Grid>
                         )
                     })}

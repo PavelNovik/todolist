@@ -1,11 +1,10 @@
-import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
-import {Button, IconButton, TextField} from "@mui/material";
-import {AddBox} from "@mui/icons-material";
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
+import {Button, TextField} from "@mui/material";
 
 type InputProps = {
     onClick: (title: string) => void
 }
-export const AddItemForm: FC<InputProps> = ({onClick}) => {
+export const AddItemForm = memo(({onClick}: InputProps) => {
     const [newTitle, setNewTitle] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
     const onClickHandler = () => {
@@ -17,7 +16,7 @@ export const AddItemForm: FC<InputProps> = ({onClick}) => {
         setNewTitle(e.currentTarget.value)
     }
     const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+        if (error) setError(null)
         if (e.key === "Enter" && e.ctrlKey) {
             onClickHandler()
         }
@@ -28,14 +27,14 @@ export const AddItemForm: FC<InputProps> = ({onClick}) => {
         <span style={{fontSize: '13px'}}>Press ctrl+enter to add new title</span>
 
     const stylesButton = {
-            maxWidth: '38px',
-            maxHeight: '38px',
-            minWidth: '38px',
-            minHeight: '38px',
-            color: 'white',
-            backgroundColor: 'red',
-            marginLeft: '5px',
-        }
+        maxWidth: '38px',
+        maxHeight: '38px',
+        minWidth: '38px',
+        minHeight: '38px',
+        color: 'white',
+        backgroundColor: 'red',
+        marginLeft: '5px',
+    }
 
     return (
         <div>
@@ -43,13 +42,13 @@ export const AddItemForm: FC<InputProps> = ({onClick}) => {
                        className={error ? 'error' : undefined} value={newTitle} onChange={onChangeHandler}
                        onKeyDown={onKeyDownHandler} error={!!error}/>
             <Button size="small"
-                    style={newTitle? stylesButton : {...stylesButton, opacity: "0.5"}}
+                    style={newTitle ? stylesButton : {...stylesButton, opacity: "0.5"}}
                     disabled={!newTitle}
                     onClick={onClickHandler}>+</Button>
             <div>{userMessage}</div>
         </div>
     );
-};
+});
 
 // <TextField
 //     label="Size"
