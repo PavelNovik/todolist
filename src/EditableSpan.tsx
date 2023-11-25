@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, memo, useState} from 'react';
 import {TextField} from "@mui/material";
 
 type EditableSpanProps = {
@@ -6,13 +6,13 @@ type EditableSpanProps = {
     isDone?: boolean
     onClick: (title: string) => void
 }
-export const EditableSpan: FC<EditableSpanProps> = ({title, isDone, onClick}) => {
+export const EditableSpan = memo(({title, isDone, onClick}: EditableSpanProps) => {
     const [newTitle, setNewTitle] = useState(title)
     const [isEditable, setIsEditable] = useState(false)
 
     const onClickHandler = () => {
         setIsEditable(!isEditable)
-        if(isEditable) {
+        if (isEditable) {
             onClick(newTitle)
         }
     }
@@ -21,8 +21,9 @@ export const EditableSpan: FC<EditableSpanProps> = ({title, isDone, onClick}) =>
     }
 
     return (isEditable ?
-            <TextField onChange={onChangeHandler} onBlur={onClickHandler} color={'secondary'} variant={'outlined'} label={'title'} size={'small'} value={newTitle} autoFocus/> :
+            <TextField onChange={onChangeHandler} onBlur={onClickHandler} color={'secondary'} variant={'outlined'}
+                       label={'title'} size={'small'} value={newTitle} autoFocus/> :
             <span onDoubleClick={onClickHandler} className={isDone ? "task-done" : "task-active"}>{title}</span>
 
     );
-};
+});
